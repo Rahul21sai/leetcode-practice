@@ -15,41 +15,31 @@
  */
 class Solution {
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
-        Map<Integer, TreeNode> res = new HashMap<>();
-        Set<Integer> to_delete_set = new HashSet<>();
-        for (int val : to_delete) {
-            to_delete_set.add(val);
+        Set<Integer> toBeDeleteNodes = new HashSet<>();
+        List<TreeNode> result = new ArrayList<>();
+        if(root==null)
+            return result;
+        for(int i: to_delete){
+            toBeDeleteNodes.add(i);
         }
-        res.put(root.val, root);
-
-        recursion(null, root, false, res, to_delete_set);
-
-        return new ArrayList<>(res.values());
+        delete(root, toBeDeleteNodes, result);
+        if(!toBeDeleteNodes.contains(root.val))
+            result.add(root);
+        return result;
     }
 
-    private void recursion(TreeNode parent, TreeNode cur_node, boolean isleft, Map<Integer, TreeNode> res, Set<Integer> to_delete_set) {
-        if (cur_node == null) return;
-
-        recursion(cur_node, cur_node.left, true, res, to_delete_set);
-        recursion(cur_node, cur_node.right, false, res, to_delete_set);
-
-        if (to_delete_set.contains(cur_node.val)) {
-            res.remove(cur_node.val);
-
-            if (parent != null) {
-                if (isleft) {
-                    parent.left = null;
-                } else {
-                    parent.right = null;
-                }
-            }
-
-            if (cur_node.left != null) {
-                res.put(cur_node.left.val, cur_node.left);
-            }
-            if (cur_node.right != null) {
-                res.put(cur_node.right.val, cur_node.right);
-            }
+    private TreeNode delete(TreeNode root, Set<Integer> toBeDeleteNodes, List<TreeNode> result){
+        if(root==null)
+            return null;
+        root.left = delete(root.left, toBeDeleteNodes, result);
+        root.right = delete(root.right, toBeDeleteNodes, result);
+        if(toBeDeleteNodes.contains(root.val)){
+            if(root.left!=null)
+                result.add(root.left);
+            if(root.right!=null)
+                result.add(root.right);
+            return null;
         }
+        return root;
     }
 }
