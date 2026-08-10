@@ -88,7 +88,7 @@ class Solution {
         int n = nums.length;
 
         SegmentTree stree = new SegmentTree(n);  // SegmentTree over balance array for current l
-        java.util.HashMap<Integer, Integer> first = new java.util.HashMap<>();  // val -> first occurence idx for current l
+        java.util.HashMap<Integer, Integer> first = new java.util.HashMap<>();  // val -> first occurrence idx for current l
 
         int result = 0;
         for (int l = n - 1; l >= 0; --l) {
